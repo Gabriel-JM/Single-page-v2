@@ -5,6 +5,13 @@ const fs = require('fs')
 const port = 8000
 
 const server = http.createServer(async (req, res) => {
+    function notFound() {
+        res.writeHead(400)
+        res.end()
+    }
+
+    if(req.url === '/index.js') notFound()
+
     const fileName = verifyUrl(req.url)
     const extension = fileName.split('.')[1]
     const filePath = path.join(__dirname, fileName)
@@ -36,27 +43,40 @@ const server = http.createServer(async (req, res) => {
         res.end(fileContent)
     }
 
-    res.writeHead(200)
-    res.end(await getFileContent(path.join(__dirname, 'index.html')))
+    notFound()
 })
 
-server.listen(port, () => console.log('Front-end server on port: '+port))
+server.listen(port, () => {
+    console.clear()
+    console.log('Front-end server on port: '+port)
+})
 
 function verifyUrl(url) {
-    return url === '/' ? 'index.html' : url
+    const verification = url === '/' || !isFileRequest(url)
+    const indexPath = path.join('public', 'index.html')
+
+    return verification ? indexPath : url
+}
+
+function isFileRequest(url) {
+    return RegExp(/\.([a-z]){1,4}/).test(url)
 }
 
 async function getFileContent(path) {
-    const result = await readFileContent(path)
+    try {
+        const result = await readFileContent(path)
 
-    return await result
+        return await result
+    } catch(err) {
+        console.error(err)
+    }
 }
 
 function readFileContent(path) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         if(fs.existsSync(path)) {
             resolve(fs.readFileSync(path))
         }
-        resolve(null)
+        reject(`File ${path} not found`)
     })
 }
