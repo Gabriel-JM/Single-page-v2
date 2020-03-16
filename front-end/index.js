@@ -5,9 +5,7 @@ const fs = require('fs')
 const port = 8000
 
 const server = http.createServer(async (req, res) => {
-    const { url: reqUrl } = req
-
-    const fileName = verifyUrl(reqUrl)
+    const fileName = verifyUrl(req.url)
     const extension = fileName.split('.')[1]
     const filePath = path.join(__dirname, fileName)
     
@@ -38,8 +36,8 @@ const server = http.createServer(async (req, res) => {
         res.end(fileContent)
     }
 
-    res.writeHead(404)
-    res.end()
+    res.writeHead(200)
+    res.end(await getFileContent(path.join(__dirname, 'index.html')))
 })
 
 server.listen(port, () => console.log('Front-end server on port: '+port))
@@ -49,20 +47,16 @@ function verifyUrl(url) {
 }
 
 async function getFileContent(path) {
-    try {
-        const result = await readFileContent(path)
+    const result = await readFileContent(path)
 
-        return await result
-    } catch(e) {
-        console.error(e)
-    }
+    return await result
 }
 
 function readFileContent(path) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
         if(fs.existsSync(path)) {
             resolve(fs.readFileSync(path))
         }
-        reject(null)
+        resolve(null)
     })
 }
