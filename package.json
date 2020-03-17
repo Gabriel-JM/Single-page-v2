@@ -2,9 +2,10 @@
   "name": "single-page-v2",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index-server.js",
   "scripts": {
-    "start": "nodemon front-end/index.js"
+    "start": "nodemon front-end/index-server.js --stdout false",
+    "help": "nodemon -h"
   },
   "keywords": [],
   "author": "",

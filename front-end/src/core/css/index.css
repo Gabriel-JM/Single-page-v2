@@ -1,3 +1,44 @@
+:root {
+    font-size: 15px;
+    --main-black: #333;
+    --font-color: #f5f5f5;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
 body {
     font-family: Arial, Helvetica, sans-serif;
+    background-color: #f9f9f9;
+    display: grid;
+    grid-template-rows: 10vh auto 8vh;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    background-color: var(--main-black);
+    color: var(--font-color);
+    padding: 1rem;
+    margin-bottom: 0;
+    border-bottom: 0.35rem solid #30a8ab;
+    box-shadow: 0 1px 2px rgba(50, 50, 50, 0.25);
+}
+
+.header > h1 {
+    font-weight: normal;
+    font-size: 1.7rem;
+}
+
+.footer {
+    background-color: var(--main-black);
+    color: var(--font-color);
 }

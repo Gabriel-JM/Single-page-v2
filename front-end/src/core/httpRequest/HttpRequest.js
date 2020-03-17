@@ -35,20 +35,24 @@ class HttpRequest {
     }
 
     async getComponent(component) {
+        const baseUrl = `${defaultComponentsUrl}${component.name}`
         const result = {}
 
-        this.setUrl(`${defaultComponentsUrl}${component.name}/${component.html}`)
-        result.html = await this.makeRequest('GET', null, defaultContentType, 'text/html')
+        this.setUrl(`${baseUrl}/${component.html}`)
+        const htmlResult = await this.makeRequest('GET', null, null, 'text/html')
+        result.html = mimify(htmlResult)
         
         if(component.css) {
-            this.setUrl(`${defaultComponentsUrl}${component.name}/${component.css}`)
-            result.css = await this.makeRequest('GET', null, defaultContentType, 'text/css')
+            this.setUrl(`${baseUrl}/${component.css}`)
+            const cssResult = await this.makeRequest('GET', null, null, 'text/css')
+            result.css = mimify(cssResult)
         }
 
         return result
     }
 
-    async makeRequest(method, bodyContent = null, contentType = defaultContentType, resType = null) {
+    async makeRequest(method, bodyContent = null, contentType = null, resType = null) {
+        contentType = setDefaultContentType(contentType, method)
         const headers = { method, ...contentType }
 
         if(bodyContent) {
@@ -72,21 +76,39 @@ class HttpRequest {
 
 export default HttpRequest
 
+function setDefaultContentType(contentType, method) {
+    const comparetion = (method == 'POST' || method == 'PUT') && contentType
+    return comparetion ? contentType : {}
+}
+
 function getResponseMethod(responseType) {
     const methodName = {
         'application/octet-stream': 'arrayBuffer',
-        'image/png': 'blob',
-        'image/gif': 'blob',
-        'image/jpeg': 'blob',
-        'image/x-icon': 'blob',
-        'image/svg+xml': 'blob',
         'application/json': 'json',
-        'text/plain': 'text',
-        'text/html': 'text',
-        'text/css': 'text',
-        'text/js': 'text',
         'multipart/form-data': 'formData'
     }
 
-    return methodName[responseType]
+    let result = null
+
+    if(responseType in methodName) {
+        result = methodName[responseType]
+    } else {
+        const methodMap = [['image', 'blob'],['text', 'text']]
+        
+        methodMap.forEach(method => {
+            if(RegExp(method[0]).test(responseType)) {
+                result = method[1]
+            }
+        })
+    }
+
+    return result
+}
+
+function mimify(data) {
+    while(data.match(/(?<=[^\w(á-ú)"<])\s+/)) {
+        data = data.replace(/(?<=[^\w(á-ú)"<])\s+/, "")
+    }
+
+    return data
 }

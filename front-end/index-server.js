@@ -10,7 +10,7 @@ const server = http.createServer(async (req, res) => {
         res.end()
     }
 
-    if(req.url === '/index.js') notFound()
+    if(req.url === '/index-server.js') notFound()
 
     const fileName = verifyUrl(req.url)
     const extension = fileName.split('.')[1]
@@ -47,7 +47,6 @@ const server = http.createServer(async (req, res) => {
 })
 
 server.listen(port, () => {
-    console.clear()
     console.log('Front-end server on port: '+port)
 })
 
