@@ -1,9 +1,9 @@
 'use strict'
 import componentsService from './componentsService.js'
 import HttpRequest from '../httpRequest/HttpRequest.js'
-import startMenu from './menu/menu.js'
+import menu from './menu/menu.js'
 
-startMenu()
+menu.startMenu()
 
 const http = new HttpRequest()
 
@@ -64,6 +64,7 @@ async function loadPageContent(pageName, keyId) {
         setHtmlAndTitle(html, title)
         setCss(css)
         loadScript(init, keyId)
+        menu.setCurrentPage(pageName)
     } else {
         notFound()
     }
@@ -126,6 +127,7 @@ function setCss(css) {
 
 function loadScript(init, keyId = null) {
     init && init(keyId)
+    addRouteEvent()
 }
 
 function notFound() {
@@ -136,8 +138,8 @@ function notFound() {
 }
 
 (function init() {
-    addRouteEvent()
     const page = pathname != '/' ? pathname.slice(1) : 'home'
     currentPage = page
     loadPageContent(page)
+    addRouteEvent()
 })()
