@@ -1,6 +1,9 @@
 'use strict'
 import componentsService from './componentsService.js'
 import HttpRequest from '../httpRequest/HttpRequest.js'
+import startMenu from './menu/menu.js'
+
+startMenu()
 
 const http = new HttpRequest()
 

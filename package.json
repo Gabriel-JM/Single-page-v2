@@ -4,7 +4,7 @@
   "description": "",
   "main": "index-server.js",
   "scripts": {
-    "start": "nodemon front-end/index-server.js --stdout false",
+    "start": "nodemon front-end/index-server.js",
     "help": "nodemon -h"
   },
   "keywords": [],
