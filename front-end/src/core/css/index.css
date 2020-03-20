@@ -48,9 +48,13 @@ body {
 }
 
 .footer {
+    font-size: 1.1rem;
     background-color: var(--main-black);
     color: var(--font-color);
     box-shadow: 0 -1px 10px rgba(50, 50, 50, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .hide {

@@ -34,10 +34,10 @@ export default {
     
     },
 
-    setCurrentPage(pageName) {
-        pageName = pageName == 'home' ? '' : `=${pageName}`
+    setCurrentPage(pathName) {
+        pathName = pathName == 'home' ? '' : `="${pathName}"`
         const currentPageLink = document.querySelector('.menu-list>li.active')
-        const queryNewPageLink = `.menu-list>li[link${pageName}]`
+        const queryNewPageLink = `.menu-list>li[link${pathName}]`
         const link = document.querySelector(queryNewPageLink)
 
         if(link) {

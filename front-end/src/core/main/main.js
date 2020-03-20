@@ -8,13 +8,14 @@ menu.startMenu()
 const http = new HttpRequest()
 
 const { pathname } = window.location
-let currentPage = null
+let currentPath = null
 let componentsCache = []
 const zoneOfPageContents = document.querySelector('[main]')
 
 window.onpopstate = event => {
     const { state } = event
-    state && loadPageContent(state.page)
+    console.log(state)
+    state && showPage(state.path, state.keyId)
 }
 
 function addRouteEvent() {
@@ -23,10 +24,7 @@ function addRouteEvent() {
             e.stopPropagation()
 
             const linkToPage = getLinkToPageAttributes(link)
-            const route = {
-                page: linkToPage.link || 'home',
-                path: linkToPage.link || '/'
-            }
+            const route = linkToPage.link || 'home'
 
             showPage(route, linkToPage.keyId)
         })
@@ -47,16 +45,16 @@ function getLinkToPageAttributes(link) {
 }
 
 function showPage(route, keyId) {
-    const method = currentPage == route.page ? 'replaceState' : 'pushState'
+    const method = currentPath == route ? 'replaceState' : 'pushState'
     
-    if(method == 'pushState') currentPage = route.page
+    if(method == 'pushState') currentPath = route
 
-    history[method](route, null, route.path)
-    method == 'pushState' && loadPageContent(route.page, keyId)
+    history[method]({ path: route, keyId }, null, `/${route}`)
+    method == 'pushState' && loadPageContent(route, keyId)
 }
 
-async function loadPageContent(pageName, keyId) {
-    const componentContent = await getPageContent(pageName)
+async function loadPageContent(path, keyId) {
+    const componentContent = await getPageContent(path)
 
     if(componentContent) {
         const {html, title, css, init} = componentContent
@@ -64,37 +62,32 @@ async function loadPageContent(pageName, keyId) {
         setHtmlAndTitle(html, title)
         setCss(css)
         loadScript(init, keyId)
-        menu.setCurrentPage(pageName)
+        menu.setCurrentPage(path)
     } else {
         notFound()
     }
 }
 
-async function getPageContent(pageName) {
-    const existingComponent = componentsCache.find(comp => (
-        comp.name === pageName
-    ))
+async function getPageContent(path) {
+    const findByPath = comp => comp.path === path
+    const existingComponent = componentsCache.find(findByPath)
 
     if(existingComponent) {
         return existingComponent
     }
     else {
-        if(pageName in componentsService) {
-            const component = componentsService[pageName]
+        const componentsPaths = componentsService.map(({path}) => path)
+        if(componentsPaths.includes(path)) {
+            const component = componentsService.find(findByPath)
             const result = await http.getComponent(component)
     
-            const newComponentObj = {
-                name: pageName,
-                html: result.html,
-                title: component.title,
-                css: result.css || null,
-                init: component.init
-            }
+            const newComponent = { ...component, ...result }
 
-            componentsCache.push(newComponentObj)
-            return newComponentObj
+            componentsCache.push(newComponent)
+            return newComponent
         }
     }
+    return null
 }
 
 function setHtmlAndTitle(html, title) {
@@ -114,10 +107,10 @@ function setTitle(title = null) {
 }
 
 function setCss(css) {
+    const innerStyles = document.querySelectorAll('style')
+    innerStyles.forEach(style => style.remove())
+    
     if(css) {
-        const innerStyles = document.querySelectorAll('style')
-        innerStyles.forEach(style => style.remove())
-
         const styleTag = document.createElement('style')
         styleTag.innerHTML = css
 
@@ -139,7 +132,6 @@ function notFound() {
 
 (function init() {
     const page = pathname != '/' ? pathname.slice(1) : 'home'
-    currentPage = page
+    currentPath = page
     loadPageContent(page)
-    addRouteEvent()
 })()

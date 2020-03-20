@@ -35,7 +35,7 @@ class HttpRequest {
     }
 
     async getComponent(component) {
-        const baseUrl = `${defaultComponentsUrl}${component.name}`
+        const baseUrl = `${defaultComponentsUrl}${component.folder}`
         const result = {}
 
         this.setUrl(`${baseUrl}/${component.html}`)

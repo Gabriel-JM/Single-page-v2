@@ -53,12 +53,20 @@ server.listen(port, () => {
 function verifyUrl(url) {
     const verification = url === '/' || !isFileRequest(url)
     const indexPath = path.join('public', 'index.html')
+    const parsedUrl = !verification ? adjustUrl(url) : url
 
-    return verification ? indexPath : url
+    return verification ? indexPath : parsedUrl
 }
 
 function isFileRequest(url) {
-    return RegExp(/\.([a-z]){1,4}/).test(url)
+    const regexs = [/\.([a-z]){1,4}/]
+    return regexs.every(regex => RegExp(regex).test(url))
+}
+
+function adjustUrl(url) {
+    if(!RegExp(/^src/).test(url)) {
+        return `src${url.split('src')[1]}`
+    }
 }
 
 async function getFileContent(path) {
