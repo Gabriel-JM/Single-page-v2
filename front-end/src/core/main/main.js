@@ -14,7 +14,6 @@ const zoneOfPageContents = document.querySelector('[main]')
 
 window.onpopstate = event => {
     const { state } = event
-    console.log(state)
     state && showPage(state.path, state.keyId)
 }
 
@@ -44,7 +43,7 @@ function getLinkToPageAttributes(link) {
     return linkObj
 }
 
-function showPage(route, keyId) {
+function showPage(route, keyId = null) {
     const method = currentPath == route ? 'replaceState' : 'pushState'
     
     if(method == 'pushState') currentPath = route
@@ -125,8 +124,7 @@ function loadScript(init, keyId = null) {
 
 function notFound() {
     if(zoneOfPageContents) {
-        setTitle('Not Found')
-        zoneOfPageContents.innerHTML = '<h1>Not Found</h1>'
+        showPage('not-found')
     }
 }
 

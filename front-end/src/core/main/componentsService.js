@@ -1,8 +1,9 @@
 import home from '../../app/home/home.js'
 import produtos from '../../app/produtos/produtos.js'
+import notFound from '../../app/notFound/notFound.js'
 
 const components = [
-    home, produtos
+    home, produtos, notFound
 ]
 
 const objectFieldParser = {
@@ -26,7 +27,8 @@ function parseComponents() {
         keys.forEach(key => {
             if(!component[key]) {
                 const parser = key in objectFieldParser
-                component[key] = parser ? objectFieldParser[key](name) : name
+                component[key] = parser ? 
+                    objectFieldParser[key](name) : name
             }
         })
 
