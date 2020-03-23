@@ -1,4 +1,5 @@
 @import './menu.css';
+@import './defaultLayoutContainer.css';
 
 :root {
     font-size: 15px;
@@ -48,7 +49,7 @@ body {
 }
 
 .footer {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     background-color: var(--main-black);
     color: var(--font-color);
     box-shadow: 0 -1px 10px rgba(50, 50, 50, 0.5);
@@ -63,4 +64,10 @@ body {
 
 .show-block {
     display: block;
+}
+
+@media (max-width: 450px) {
+    :root {
+        font-size: 13.5px;
+    }
 }

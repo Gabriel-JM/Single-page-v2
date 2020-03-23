@@ -1,7 +1,6 @@
 export default {
-    name: 'produtos',
-    html: 'hi.html',
-    css: 'to.css',
+    name: 'products',
+    css: false,
     init: start
 }
 

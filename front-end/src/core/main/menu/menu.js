@@ -9,7 +9,8 @@ const menu = {
 export default {
     startMenu() {
 
-        const setHideMenuAnimation = () => {
+        const setHideMenuAnimation = e => {
+            e.stopPropagation()
             menu.itself.classList.add('hide-menu')
         }
 

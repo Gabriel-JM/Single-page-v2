@@ -10,46 +10,56 @@ const http = new HttpRequest()
 const { pathname } = window.location
 let currentPath = null
 let componentsCache = []
+const componentsPaths = componentsService.map(({path}) => path)
 const zoneOfPageContents = document.querySelector('[main]')
 
 window.onpopstate = event => {
     const { state } = event
-    state && showPage(state.path, state.keyId)
+    const path = state.path || 'home'
+    showPage(path, state.keyId)
 }
 
 function addRouteEvent() {
     document.querySelectorAll('[link]').forEach(link => {
-        link.addEventListener('click', e => {
-            e.stopPropagation()
+        if(!link.onclick) {
+            link.onclick = e => {
+                e.stopPropagation()
 
-            const linkToPage = getLinkToPageAttributes(link)
-            const route = linkToPage.link || 'home'
+                const linkToPage = getLinkToPageAttributes(link)
+                const route = linkToPage.link || 'home'
 
-            showPage(route, linkToPage.keyId)
-        })
+                showPage(route, linkToPage.keyId)
+            }
+        }
     })
 }
 
 function getLinkToPageAttributes(link) {
-    const linkObj = {}
-    const attrs = ['link', 'keyId']
+    const linkObj = { link: null, keyId: null }
 
-    attrs.forEach(attr => {
+    Object.keys(linkObj).forEach(attr => {
         const hasAttr = link.hasAttribute(attr)
-        const attrValue = hasAttr && link.getAttribute(attr)
-        linkObj[attr] = hasAttr ? attrValue : null
+        if(hasAttr) {
+            linkObj[attr] = link.getAttribute(attr)
+        }
     })
 
     return linkObj
 }
 
 function showPage(route, keyId = null) {
-    const method = currentPath == route ? 'replaceState' : 'pushState'
+    const isTheCurrentPath = currentPath == route
+    const hasPath = componentsPaths.includes(route)
     
-    if(method == 'pushState') currentPath = route
+    if(hasPath) {
+        const method = isTheCurrentPath ? 'replaceState' : 'pushState'
+    
+        if(!isTheCurrentPath) currentPath = route
 
-    history[method]({ path: route, keyId }, null, `/${route}`)
-    method == 'pushState' && loadPageContent(route, keyId)
+        history[method]({ path: route, keyId }, null, `/${route}`)
+    }
+
+    !isTheCurrentPath && loadPageContent(route, keyId)
 }
 
 async function loadPageContent(path, keyId) {
@@ -75,7 +85,6 @@ async function getPageContent(path) {
         return existingComponent
     }
     else {
-        const componentsPaths = componentsService.map(({path}) => path)
         if(componentsPaths.includes(path)) {
             const component = componentsService.find(findByPath)
             const result = await http.getComponent(component)
