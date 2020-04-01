@@ -46,9 +46,7 @@ const server = http.createServer(async (req, res) => {
     notFound()
 })
 
-server.listen(port, () => {
-    console.log('Front-end server on port: '+port)
-})
+server.listen(port, console.log('Front-end server on port: '+port))
 
 function verifyUrl(url) {
     const verification = url === '/' || !isFileRequest(url)

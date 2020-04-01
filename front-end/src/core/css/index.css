@@ -1,5 +1,6 @@
 @import './menu.css';
 @import './defaultLayoutContainer.css';
+@import './buttons.css';
 
 :root {
     font-size: 15px;
