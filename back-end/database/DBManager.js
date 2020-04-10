@@ -4,7 +4,7 @@ const StringParser = require('../core/stringParser/StringParser')
 
 const stringParser = new StringParser()
 
-const dirPath = path.join(__dirname, 'TablesSql')
+const dirPath = path.join(__dirname, 'entities')
 
 const executeSqlQuery = (connection, query, values) => {
     return new Promise((resolve, reject) => {
@@ -35,7 +35,8 @@ class DBManager {
     async showTables() {
         const normals = await this.callSqlQuery(`show tables;`)
 
-        const noPlurals = normals.map(({ Tables_in_pet_db: table}) => {
+        const noPlurals = normals.map(result => {
+            const table = result['Tables_in_single_page_db']
             const isPlural = table.charAt(table.length - 1) === 's'
             return isPlural ? table.slice(0, table.length - 1) : table
         })

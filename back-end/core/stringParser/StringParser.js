@@ -5,6 +5,20 @@ class StringParser {
         return upperFirstLetter + string.slice(1)
     }
 
+    recreateCapitalizeWordToLower(string, match) {
+        let array = string.split(match[0])
+
+        array = array.map(string => {
+            if(array.indexOf(string)) {
+                string = match[0].toLowerCase() + string
+            }
+
+            return string
+        })
+
+        return array
+    }
+
     createEventName(method, pathArray) {
         let newEventName = method
 
@@ -47,19 +61,23 @@ class StringParser {
 
         if(!match) { return string } 
         
-        let array = string.split(match[0])
-
-        array = array.map(string => {
-            if(array.indexOf(string)) {
-                string = match[0].toLowerCase() + string
-            }
-
-            return string
-        })
+        let array = this.recreateCapitalizeWordToLower(string, match)
 
         const newString = array.join('_')
 
         return this.camelCaseToSnakeCase(newString)
+    }
+
+    pascalCaseToDashCase(string) {
+        const match = string.match(/(?<=[a-z])[A-Z]/)
+
+        if(!match) { return string.toLowerCase() }
+
+        let array = this.recreateCapitalizeWordToLower(string, match)
+
+        const newString = array.join('-')
+
+        return this.pascalCaseToDashCase(newString)
     }
 
     createUpdateQuery(tableName, obj) {

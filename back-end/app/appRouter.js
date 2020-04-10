@@ -3,10 +3,7 @@ const controllersImportBuilder = require('../core/controllersImportBuilder/Contr
 
 const srcDirPath = path.join(__dirname, 'src')
 
-const controllers = {
-    'products-categories': require('./src/ProductsCategories/ProductsCategoriesController'),
-    ...controllersImportBuilder(srcDirPath)
-}
+const controllers = controllersImportBuilder(srcDirPath)
 
 function appRouter(content) {
     const [ origin ] = content.pathArray

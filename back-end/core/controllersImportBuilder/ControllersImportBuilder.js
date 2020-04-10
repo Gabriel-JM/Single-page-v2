@@ -1,8 +1,11 @@
 const fs = require('fs')
 const path = require('path')
+const StringParser = require('../stringParser/StringParser')
+
+const stringParser = new StringParser()
 
 function getControllersNames(dirName) {
-    const pathString = path.join(__dirname, '..', '..', 'src', dirName)
+    const pathString = path.join(__dirname, '..','..','app', 'src', dirName)
     const dirFiles = fs.readdirSync(pathString)
 
     const controllersFile = dirFiles.filter(fileName => (
@@ -21,8 +24,9 @@ function createTheObject(srcDirs, srcDirPath) {
         const existsPath = fs.existsSync(`${requirePath}.js`)
 
         if(existsPath) {
+            const controllerName = stringParser.pascalCaseToDashCase(dirName)
             Object.assign(controllers, {
-                [dirName.toLowerCase()]: require(requirePath)
+                [controllerName]: require(requirePath)
             })
         }
     })
@@ -31,7 +35,6 @@ function createTheObject(srcDirs, srcDirPath) {
 }
 
 function buildObject(srcDirPath) {
-
     const srcDirs = fs.readdirSync(srcDirPath)
 
     const names = srcDirs.map(getControllersNames).flat()

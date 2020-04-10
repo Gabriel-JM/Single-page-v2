@@ -36,6 +36,7 @@ class Controller extends EventEmitter {
                     throw new Error('Event not Found!')
                 }
 
+                
                 this[event]()
             })
         })

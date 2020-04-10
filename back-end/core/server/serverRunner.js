@@ -11,7 +11,7 @@ async function handleRequests(req, res) {
 
     const content = {
         req, res,
-        url, method,
+        url, method: method.toLowerCase(),
         query, pathArray,
         headers, body
     }
@@ -40,9 +40,9 @@ function loadBodyContent(req) {
         req.on('end', () => {
             body = Buffer.concat(body).toString()
 
-            if(!body) resolve(null)
+            if(body) resolve(JSON.parse(body))
 
-            resolve(JSON.parse(body))
+            resolve({})
         })
     })
 }
