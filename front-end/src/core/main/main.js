@@ -15,8 +15,9 @@ const zoneOfPageContents = document.querySelector('[main]')
 
 window.onpopstate = event => {
     const { state } = event
-    const path = state.path || 'home'
-    showPage(path, state.keyId)
+    const path = state ? state.path : 'home'
+    const keyId = state ? state.keyId : null
+    showPage(path, keyId)
 }
 
 function addRouteEvent() {

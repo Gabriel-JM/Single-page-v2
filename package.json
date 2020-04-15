@@ -4,7 +4,8 @@
   "description": "",
   "main": "index-server.js",
   "scripts": {
-    "start": "nodemon front-end/index-server.js",
+    "prestart": "clear && echo Front-end server on port: 8000",
+    "start": "nodemon --quiet front-end/index-server.js",
     "help": "nodemon -h"
   },
   "keywords": [],

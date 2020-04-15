@@ -1,16 +1,20 @@
+import actions from './productsCategoriesActions.js'
+
 export default {
     name: 'productCategories',
     css: false,
     title: 'Products Categories',
     path: 'products/categories',
-    init() {
-        const addCategorieBtn = document.querySelector('[add-category]')
-        const categoryList = document.querySelector('[category-list]')
-        
-        addCategorieBtn.addEventListener('click', () => {
-            categoryList.innerHTML = (`
-                <h1>HI</h1>
-            `)
-        })
-    }
+    init
+}
+
+function init() {
+    const addCategoryBtn = document.querySelector('[add-category]')
+    const categoriesList = document.querySelector('[category-list]')
+
+    actions.init(categoriesList)
+
+    addCategoryBtn.addEventListener('click', () => {
+        actions.enableForm()
+    })
 }

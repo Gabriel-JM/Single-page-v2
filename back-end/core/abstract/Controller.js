@@ -7,7 +7,8 @@ const headers =  {
     'Access-Control-Allow-Origin' : '*',
     'Access-Control-Allow-Methods' : 'OPTIONS, GET, POST, PUT, DELETE',
     'Access-Control-Allow-Headers' : '*',
-    'Access-Control-Max-Age' : 2592000
+    'Access-Control-Max-Age' : 2592000,
+    'Content-Type': 'application/json'
 }
 
 const eventNames = ['get', 'post', 'put', 'delete', 'options']
@@ -169,10 +170,9 @@ class Controller extends EventEmitter {
 
     setPostObject(callback) {
         this.postObject = callback() || null
-        this.start()
     }
 
-    start() {
+    init() {
         this.emit(this.verifyMethod())
     }
 

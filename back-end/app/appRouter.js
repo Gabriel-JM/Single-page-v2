@@ -9,7 +9,7 @@ function appRouter(content) {
     const [ origin ] = content.pathArray
     const hasPath = origin in controllers
 
-    hasPath ? new controllers[origin](content) : notFound(content.res)
+    hasPath ? new controllers[origin](content).init() : notFound(content.res)
 }
 
 function notFound(res) {
