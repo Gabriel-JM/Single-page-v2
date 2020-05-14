@@ -40,12 +40,12 @@ class HttpRequest {
 
         this.setUrl(`${baseUrl}/${component.html}`)
         const htmlResult = await this.makeRequest('GET', null, null, 'text/html')
-        result.html = mimify(htmlResult)
+        result.html = minify(htmlResult)
         
         if(component.css) {
             this.setUrl(`${baseUrl}/${component.css}`)
             const cssResult = await this.makeRequest('GET', null, null, 'text/css')
-            result.css = mimify(cssResult)
+            result.css = minify(cssResult)
         }
 
         return result
@@ -105,10 +105,12 @@ function getResponseMethod(responseType) {
     return result
 }
 
-function mimify(data) {
-    while(data.match(/(?<=[^\w(á-ú)"<])\s+/)) {
-        data = data.replace(/(?<=[^\w(á-ú)"<])\s+/, "")
+function minify(data) {
+    // Last Reg Exp /(?<=[^\w(á-ú)"<])\s+/
+    const regex = /(?<=[>|\n])\s+/
+    while(data.match(regex)) {
+        data = data.replace(regex, "")
     }
-
+    
     return data
 }

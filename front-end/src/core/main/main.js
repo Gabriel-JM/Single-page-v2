@@ -17,7 +17,7 @@ window.onpopstate = event => {
     const { state } = event
     const path = state ? state.path : 'home'
     const keyId = state ? state.keyId : null
-    showPage(path, keyId)
+    showPage(path, keyId, true)
 }
 
 function addRouteEvent() {
@@ -48,12 +48,12 @@ function getLinkToPageAttributes(link) {
     return linkObj
 }
 
-function showPage(route, keyId = null) {
+function showPage(route, keyId = null, goBack = false) {
     const isTheCurrentPath = currentPath == route
     const hasPath = componentsPaths.includes(route)
     
-    if(hasPath) {
-        const method = isTheCurrentPath ? 'replaceState' : 'pushState'
+    if(hasPath && !goBack) {
+        const method = isTheCurrentPath && !goBack ? 'replaceState' : 'pushState'
     
         if(!isTheCurrentPath) currentPath = route
 
@@ -73,6 +73,7 @@ async function loadPageContent(path, keyId) {
         setCss(css)
         loadScript(init, keyId)
         menu.setCurrentPage(path)
+        currentPath = path
     } else {
         notFound()
     }
