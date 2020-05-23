@@ -1,10 +1,29 @@
 <section class="content-container large">
-    <header class="content-header">
-        <h2 class="header-title">Products Categories</h2>
-    </header>
+  <header class="content-header">
+    <h2 class="header-title">Products Categories</h2>
+  </header>
 
-    <div class="content-body">
-        <button add-category class="btn blue">+ Category</button>
-        <div category-list class="cards-list"></div>
+  <form floating-form class="floating-form">
+    <h1 class="floating-form-title" form-title>Adding Category</h1>
+
+    <label>
+      <span>Name</span>
+      <input type="text" name="name" />
+    </label>
+
+    <label>
+      <span>Color</span>
+      <input type="color" name="color" />
+    </label>
+
+    <div class="floating-form-actions">
+      <button class="btn blue">Save</button>
+      <button close-form class="btn cancel">Cancel</button>
     </div>
+  </form>
+
+  <div class="content-body">
+    <button add-category class="btn blue">+ Category</button>
+    <div category-list class="cards-list"></div>
+  </div>
 </section>

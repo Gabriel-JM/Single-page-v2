@@ -1,0 +1,13 @@
+@font-face {
+  src:url('../../assets/fonts/OpenSans-Regular.ttf'),
+      url('../../assets/fonts/OpenSans-Bold.ttf'),
+      url('../../assets/fonts/OpenSans-BoldItalic.ttf'),
+      url('../../assets/fonts/OpenSans-ExtraBold.ttf'),
+      url('../../assets/fonts/OpenSans-ExtraBoldItalic.ttf'),
+      url('../../assets/fonts/OpenSans-Italic.ttf'),
+      url('../../assets/fonts/OpenSans-Light.ttf'),
+      url('../../assets/fonts/OpenSans-LightItalic.ttf'),
+      url('../../assets/fonts/OpenSans-SemiBold.ttf'),
+      url('../../assets/fonts/OpenSans-SemiBoldItalic.ttf');
+  font-family: 'Open-sans';
+}

@@ -1,0 +1,63 @@
+.floating-form {
+  position: absolute;
+  top: 20%;
+  left: -90vw;
+  background-color: white;
+  margin-left: 20px;
+  transition: 0.6s ease-in-out;
+  padding: 20px 22px;
+  border: 1px solid #888;
+  border-radius: 2px 8px 8px 2px;
+  box-shadow: -1px 1px 4px rgba(30, 30, 30, 0.3);
+}
+  .floating-form-title {
+    font-size: 1.65rem;
+    color: #333;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #aaa;
+    text-align: center;
+  }
+
+  .floating-form label {
+    display: block;
+    padding: 10px 0;
+  }
+    .floating-form label span {
+      display: inline-block;
+      margin-bottom: 6px;
+      font-size: 1.15rem;
+    }
+
+    .floating-form label input[type="text"] {
+      width: 100%;
+      font-size: 0.9rem;
+      display: block;
+      padding: 4px 6px;
+      border-radius: 4px;
+      border: 1px solid #888;
+      transition: 0.3s;
+    }
+
+    .floating-form label input[type="text"]:focus {
+      box-shadow: 0 0 0 3px var(--transparent-green-blue);
+    }
+
+  .floating-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 6px;
+  }
+    .floating-form-actions > button {
+      font-size: 1.05rem;
+      padding: 5px 14px;
+      margin: 0;
+    }
+
+    .floating-form-actions > button:first-child {
+      margin-right: 12px;
+    }
+
+.show-form {
+  left: 0;
+}

@@ -1,24 +1,29 @@
 :root {
-    --blue: #3498dd;
+  --blue: #3498dd;
+  --grey: #aaa;
 }
 
 .btn {
-    padding: 10px 15px;
-    cursor: pointer;
-    color: white;
-    border-radius: 4px;
-    border: 0;
-    border-radius: 4px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    margin: 10px;
-    transition: filter 0.25s ease;
+  padding: 10px 15px;
+  cursor: pointer;
+  color: white;
+  border-radius: 4px;
+  border: 0;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin: 10px;
+  transition: filter 0.25s ease;
 }
 
 .btn:active {
-    filter: brightness(0.92);
+  filter: brightness(0.92);
 }
 
 .btn.blue {
-    background-color: var(--blue);
+  background-color: var(--blue);
+}
+
+.btn.cancel {
+  background-color: var(--grey);
 }

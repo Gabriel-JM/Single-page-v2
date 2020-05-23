@@ -1,34 +1,32 @@
 .content-container {
-    width: 95%;
-    max-width: 1100px;
-    margin: 0 auto;
-    margin-top: 10px;
-    color: #222;
+  width: 95%;
+  max-width: 1100px;
+  margin: 0 auto;
+  margin-top: 10px;
+  color: #222;
 }
-
-.content-container.large {
+  .content-container.large {
     max-width: 1200px;
-}
+  }
 
-.content-header {
+  .content-header {
     display: flex;
     align-items: center;
     padding: 8px 20px;
     border-bottom: 1px solid #777;
-}
+  }
+    .content-header > .header-title {
+      font-size: 1.95rem;
+    }
 
-.content-header > .header-title {
-    font-size: 1.95rem;
-}
+    .content-header > button {
+      margin: 0;
+    }
 
-.content-header > button {
-    margin: 0;
-}
+    .content-header > button:first-of-type {
+      margin-left: auto;
+    }
 
-.content-header > button:first-of-type {
-    margin-left: auto;
-}
-
-.content-header > button + button {
-    margin-left: 8px;
-}
+    .content-header > button + button {
+      margin-left: 8px;
+    }

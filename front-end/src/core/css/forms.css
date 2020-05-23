@@ -1,0 +1,6 @@
+.default-form {
+  padding: 10px;
+}
+  .default-form input {
+    display: block;
+  }

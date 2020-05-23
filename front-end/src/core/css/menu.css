@@ -1,11 +1,11 @@
 .menu-icon {
-    width: 22px;
-    height: 20px;
-    margin-right: 12px;
-    cursor: pointer;
+  width: 22px;
+  height: 20px;
+  margin-right: 12px;
+  cursor: pointer;
 }
 
-.menu-icon.open::before {
+  .menu-icon.open::before {
     content: '';
     display: block;
     background-color: white;
@@ -14,9 +14,9 @@
     width: 100%;
     height: 3px;
     box-shadow: 0 7px white, 0 14px white;
-}
+  }
 
-.menu-icon.close::before {
+  .menu-icon.close::before {
     content: '';
     display: block;
     background-color: white;
@@ -24,9 +24,9 @@
     width: 100%;
     height: 3px;
     transform: rotate(45deg) translate(5px, 6px);
-}
+  }
 
-.menu-icon.close::after {
+  .menu-icon.close::after {
     content: '';
     display: block;
     background-color: white;
@@ -34,32 +34,32 @@
     width: 100%;
     height: 3px;
     transform: rotate(-45deg) translate(-4px, 3px);
-}
+  }
 
 .menu-container {
-    display: none; /*default: block*/
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
-    overflow: hidden;
-    animation: show-in 0.4s ease-in-out;
+  display: none; /*default: block*/
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: show-in 0.4s ease-in-out;
 }
 
 .menu {
-    width: 30%;
-    min-width: 280px;
-    height: 100%;
-    background-color: #333;
-    box-shadow: 3px 0 5px rgba(0, 0, 0, 0.5);
-    border-right: 6px solid var(--light-green-blue);
-    position: relative;
-    animation: show-menu 0.6s ease;
+  width: 30%;
+  min-width: 280px;
+  height: 100%;
+  background-color: #333;
+  box-shadow: 3px 0 5px rgba(0, 0, 0, 0.5);
+  border-right: 6px solid var(--light-green-blue);
+  position: relative;
+  animation: show-menu 0.6s ease;
 }
 
-.menu::after {
+  .menu::after {
     content: '';
     width: 1px;
     height: 1px;
@@ -72,88 +72,88 @@
     bottom: 1px;
     right: -260px;
     transform: rotate(45deg) translate(185px, 185px);
-}
+  }
 
-.menu-header {
+  .menu-header {
     display: flex;
     align-items: center;
     background-color: #111a;
     padding: 11px;
-}
+  }
 
-.menu-title {
+  .menu-title {
     font-size: 2.3rem;
     margin-left: 10px;
-}
+  }
 
-.menu-list {
+  .menu-list {
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-}
+  }
 
-.menu-list > li {
-    width: 100%;
-    font-size: 1.3rem;
-    padding: 13px 15px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-}
+    .menu-list > li {
+      width: 100%;
+      font-size: 1.3rem;
+      padding: 13px 15px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+    }
 
-.menu-list > li:hover {
-    background-color: var(--transparent-green-blue);
-}
+    .menu-list > li:hover {
+      background-color: var(--transparent-green-blue);
+    }
 
-.menu-list > li.active {
-    background-color: #222b;
-    display: flex;
-    align-items: center;
-}
+    .menu-list > li.active {
+      background-color: #222b;
+      display: flex;
+      align-items: center;
+    }
 
-.menu-list > li.active::before {
-    content: '';
-    display: block;
-    width: 1px;
-    height: 1px;
-    border: 8px solid transparent;
-    border-left: 8px solid white;
-}
+    .menu-list > li.active::before {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 1px;
+      border: 8px solid transparent;
+      border-left: 8px solid white;
+    }
 
 .hide-menu {
-    animation: hide-menu 0.3s ease-out;
+  animation: hide-menu 0.3s ease-out;
 }
 
 @keyframes show-menu {
-    from {
-        transform: translateX(-100%);
-    }
-    to {
-        transform: translateX(0);
-    }
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 @keyframes hide-menu {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(-100%);
-    }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 }
 
 @keyframes show-in {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @media (max-width: 425px) {
-    .menu {
-        width: 85%;
-    }
+  .menu {
+    width: 85%;
+  }
 }

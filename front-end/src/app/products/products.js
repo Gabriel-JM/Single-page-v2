@@ -1,7 +1,5 @@
 export default {
-    name: 'products',
-    css: false,
-    init: start
+  name: 'products',
+  css: false,
+  init: null
 }
-
-function start() {null}
