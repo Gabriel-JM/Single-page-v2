@@ -39,9 +39,9 @@ function getLinkToPageAttributes(link) {
   const linkObj = { link: null, keyId: null }
 
   Object.keys(linkObj).forEach(attr => {
-    const hasAttr = link.hasAttribute(attr)
+    const hasAttr = link.attributes[attr]
     if(hasAttr) {
-      linkObj[attr] = link.getAttribute(attr)
+      linkObj[attr] = link.attributes[attr]
     }
   })
 
@@ -67,13 +67,19 @@ async function loadPageContent(path, keyId) {
   const componentContent = await getPageContent(path)
 
   if(componentContent) {
-    const {html, title, css, init} = componentContent
+    import PageContentBuilder from './PageContentBuilder/PageContentBuilder.js'
 
-    setHtmlAndTitle(html, title)
-    setCss(css)
-    loadScript(init, keyId)
-    menu.setCurrentPage(path)
-    currentPath = path
+    const builder = new PageContentBuilder(
+      zoneOfPageContents,
+      componentContent,
+      keyId
+    )
+
+    builder.mount(() => {
+      menu.setCurrentPage(path)
+      currentPath = path
+      addRouteEvent()
+    })
   } else {
     notFound()
   }
@@ -130,13 +136,10 @@ function setCss(css) {
 
 function loadScript(init, keyId = null) {
   init && init(keyId)
-  addRouteEvent()
 }
 
 function notFound() {
-  if(zoneOfPageContents) {
-    showPage('not-found')
-  }
+  zoneOfPageContents && showPage('not-found')
 }
 
 (function init() {
