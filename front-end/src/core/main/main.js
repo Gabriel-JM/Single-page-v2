@@ -1,7 +1,7 @@
 'use strict'
 import componentsService from './componentsService/componentsService.js'
 import HttpRequest from '../httpRequest/HttpRequest.js'
-import menu from './menu/menu.js'
+import menu from '../menu/menu.js'
 
 menu.startMenu()
 
