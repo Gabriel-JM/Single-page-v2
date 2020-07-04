@@ -1,4 +1,4 @@
-export default class PageContentConstructor {
+export default class PageContentBuilder {
   
   constructor(contentsZone, componentContent, keyId) {
     this.contentsZone = contentsZone
@@ -44,7 +44,7 @@ export default class PageContentConstructor {
     }
   }
 
-  loadScripts() {
+  loadScripts(makeAfterBuild) {
     this.componentScript && this.componentScript(this.keyId)
   }
 

@@ -1,6 +1,5 @@
 'use strict'
 
-const defaultComponentsUrl = `${location.origin}/src/app/`
 const defaultContentType = {
   'Content-Type': 'application/json'
 }
@@ -34,23 +33,6 @@ class HttpRequest {
     return await this.makeRequest('DELETE')
   }
 
-  async getComponent(component) {
-    const baseUrl = `${defaultComponentsUrl}${component.folder}`
-    const result = {}
-
-    this.setUrl(`${baseUrl}/${component.html}`)
-    const htmlResult = await this.makeRequest('GET', null, null, 'text/html')
-    result.html = minifyHTML(htmlResult)
-    
-    if(component.css) {
-      this.setUrl(`${baseUrl}/${component.css}`)
-      const cssResult = await this.makeRequest('GET', null, null, 'text/css')
-      result.css = minifyCSS(cssResult)
-    }
-
-    return result
-  }
-
   async makeRequest(method, bodyContent = null, contentType = null, resType = null) {
     contentType = setDefaultContentType(contentType, method)
     const headers = { method, ...contentType }
@@ -73,8 +55,6 @@ class HttpRequest {
   }
 
 }
-
-export default HttpRequest
 
 function setDefaultContentType(contentType, method) {
   const comparetion = (method == 'POST' || method == 'PUT') && contentType
@@ -105,20 +85,4 @@ function getResponseMethod(responseType) {
   return result
 }
 
-function minifyHTML(data) {
-  // Last Reg Exp /(?<=[^\w(á-ú)"<])\s+/
-  const regex = /(?=[>|\n])\s+|\r+/g
-  data = data.replace(regex, "")
-  console.log(data)
-  return data
-}
-
-function minifyCSS(data) {
-  const regex = /(?=[{|}|;|\n])\s+|\r+/g
-  data = data
-    .replace(regex, "")
-    .replace(/(:)\s/g, "$1")
-    .replace(/\s({)/g, "$1")
-  console.log(data)
-  return data
-}
+export default HttpRequest

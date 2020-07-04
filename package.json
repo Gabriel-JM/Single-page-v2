@@ -4,7 +4,7 @@
   "description": "",
   "main": "index-server.js",
   "scripts": {
-    "prestart": "clear",
+    "prestart": "cls",
     "start": "echo Front-end server on port: 8000 && nodemon --quiet front-end/index-server.js",
     "help": "nodemon -h"
   },
