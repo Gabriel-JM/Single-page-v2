@@ -1,13 +1,11 @@
 :root {
   --blue: #3498dd;
-  --grey: #aaa;
+  --grey: #ccc;
 }
 
 .btn {
-  padding: 10px 15px;
-  cursor: pointer;
-  color: white;
-  border-radius: 4px;
+  padding: 12px 15px;
+  color: #f0f0f0;
   border: 0;
   border-radius: 4px;
   font-size: 1.2rem;
@@ -25,5 +23,6 @@
 }
 
 .btn.cancel {
+  color: #444;
   background-color: var(--grey);
 }

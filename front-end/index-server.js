@@ -2,35 +2,42 @@ const http = require('http')
 const path = require('path')
 const fs = require('fs')
 
-const port = 8000
+const port = process.env.PORT || 8000
 
-function verifyUrl(url) {
-  const verification = url === '/' || !isFileRequest(url)
-  const indexPath = path.join('public', 'index.html')
-  const parsedUrl = !verification ? adjustUrl(url) : url
-
-  return verification ? indexPath : parsedUrl
+const mimeTypes = {
+  txt: 'text/plain',
+  html: 'text/html',
+  css: 'text/css',
+  js: 'text/javascript',
+  xml: 'application/xml',
+  ts: 'application/typescript',
+  json: 'application/json',
+  pdf: 'application/pdf',
+  jpg: 'image/jpeg',
+  png: 'image/png',
+  gif: 'image/gif',
+  svg: 'image/svg+xml',
+  ico: 'image/x-icon',
+  otf: 'font/otf',
+  ttf: 'font/ttf'
 }
 
-function isFileRequest(url) {
-  const regexs = [/\.([a-z]){1,4}/]
-  return regexs.every(regex => RegExp(regex).test(url))
-}
+const instFileRequest = url => !(/.+\..{1,4}$/).test(url)
 
-function adjustUrl(url) {
-  if(!RegExp(/^src/).test(url)) {
-    return `src${url.split('src')[1]}`
-  }
+const adjustUrl = url => !(/src/).test(url) ? `/src${url}` : url
+
+function verifyUrl(url, isFetchSafe) {
+  const isIndexOrNotSecure = url === '/' || !isFetchSafe || instFileRequest(url)
+  const adjustedUrl = !isIndexOrNotSecure ? adjustUrl(url) : url
+  const defaultPath = path.join('public', 'index.html')
+
+  return isIndexOrNotSecure ? defaultPath : adjustedUrl
 }
 
 async function getFileContent(path) {
-  try {
-    const result = await readFileContent(path)
+  const result = await readFileContent(path)
 
-    return await result
-  } catch(err) {
-    console.error('index-server Error:', err)
-  }
+  return await result
 }
 
 function readFileContent(path) {
@@ -49,39 +56,36 @@ function notFound(res) {
 
 const server = http.createServer(async (req, res) => {
   if(req.url === '/index-server.js') notFound(res)
-
-  const fileName = verifyUrl(req.url)
-  const extension = fileName.split('.')[1]
-  const filePath = path.join(__dirname, fileName)
   
-  const mimeTypes = {
-    txt: 'text/plain',
-    html: 'text/html',
-    css: 'text/css',
-    js: 'text/javascript',
-    xml: 'application/xml',
-    ts: 'application/typescript',
-    json: 'application/json',
-    pdf: 'application/pdf',
-    jpg: 'image/jpeg',
-    png: 'image/png',
-    gif: 'image/gif',
-    svg: 'image/svg+xml',
-    ico: 'image/x-icon',
-    otf: 'font/otf',
-    ttf: 'font/ttf'
-  }
+  const secFetchSite = req.headers['sec-fetch-site']
+  const isFetchSafe = (
+    secFetchSite === 'none' || secFetchSite === 'same-origin'
+  )
 
+  const fileName = verifyUrl(req.url, isFetchSafe)
+  const filePath = path.join(__dirname, fileName)
+
+  const extension = fileName.split('.')[1]
   const contentType = mimeTypes[extension] || 'application/octet-stream'
 
-  const fileContent = await getFileContent(filePath)
+  try {
+    const fileContent = await getFileContent(filePath)
 
-  if(fileContent) {
-    res.writeHead(200, { 'Content-Type': contentType })
-    res.end(fileContent)
+    if(fileContent) {
+      res.writeHead(200, { 'Content-Type': contentType })
+      res.end(fileContent)
+    }
+  } catch(err) {
+    console.error('index-server Error:', err)
   }
 
   notFound(res)
 })
 
-server.listen(port)
+server.listen(
+  port,
+  () => {
+    console.clear()
+    console.log(`Server running on port ${port}`)
+  }
+)

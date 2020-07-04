@@ -56,7 +56,7 @@
   box-shadow: 3px 0 5px rgba(0, 0, 0, 0.5);
   border-right: 6px solid var(--light-green-blue);
   position: relative;
-  animation: show-menu 0.6s ease;
+  animation: show-menu 0.3s ease;
 }
 
   .menu::after {
@@ -122,7 +122,7 @@
     }
 
 .hide-menu {
-  animation: hide-menu 0.3s ease-out;
+  animation: hide-menu 0.25s ease-out;
 }
 
 @keyframes show-menu {
