@@ -1,14 +1,15 @@
+'use strict'
 import componentsService from '../../componentsService/componentsService.js'
 import PageContentBuilder from '../PageContentBuilder/PageContentBuilder.js'
 import getComponent from '../componentExtractor/componentExtractor.js'
 import historyRouting from './historyRouting.js'
-import menu from '../../menu/menu.js'
 
 class MainRouter {
   currentPath = null
   componentsCache = []
   componentsRoot = document.querySelector('[main]') || document.body
   componentsPaths = componentsService.map(component => component.path)
+  callbacks = {}
 
   addRoutingEvent() {
     document.querySelectorAll('[link]').forEach(linkElem => {
@@ -39,6 +40,9 @@ class MainRouter {
   }
 
   verifyRoute(route, keyId = null, usingHistory = false) {
+    const { beforeInit } = this.callbacks
+    beforeInit && beforeInit(route, keyId, usingHistory)
+
     const isTheCurrentPath = this.currentPath == route
     const hasPath = this.componentsPaths.includes(route)
     
@@ -60,6 +64,7 @@ class MainRouter {
 
     if(!componentContent) return this.notFound()
 
+    const { afterMountComponent } = this.callbacks
     const builder = new PageContentBuilder(
       this.componentsRoot,
       componentContent,
@@ -67,7 +72,7 @@ class MainRouter {
     )
 
     builder.mount(() => {
-      menu.setCurrentPage(path)
+      afterMountComponent && afterMountComponent(path, keyId)
       this.currentPath = path
       this.addRoutingEvent()
     })
@@ -100,11 +105,18 @@ const mainRouter = new MainRouter()
 export default {
   init(path = location.pathname) {
     historyRouting()
-    mainRouter.loadPageContent(path)
+    mainRouter.verifyRoute(path)
   },
 
   showPageByHistory(path, keyId) {
     const isUsingHistory = true
     mainRouter.verifyRoute(path, keyId, isUsingHistory)
+  },
+
+  events({ afterMountComponent, beforeInit } = {}) {
+    mainRouter.callbacks = {
+      beforeInit,
+      afterMountComponent
+    }
   }
 }
