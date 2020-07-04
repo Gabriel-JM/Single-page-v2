@@ -1,6 +1,6 @@
 export default {
   name: 'notFound',
-  path: 'not-found',
+  path: '/not-found',
   title: 'Not Found',
   init: null
 }

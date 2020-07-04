@@ -3,7 +3,7 @@ import actions from './productsCategoriesActions.js'
 export default {
   name: 'productCategories',
   title: 'Products Categories',
-  path: 'products/categories',
+  path: '/products/categories',
   init
 }
 

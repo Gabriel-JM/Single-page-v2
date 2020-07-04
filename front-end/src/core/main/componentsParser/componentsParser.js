@@ -1,7 +1,8 @@
 const parser = {
   title: parseTitle,
   html: name => `${name}.html`,
-  css: name => `${name}.css` 
+  css: name => `${name}.css`,
+  path: name => `/${name}`
 }
 
 function parseTitle(name) {

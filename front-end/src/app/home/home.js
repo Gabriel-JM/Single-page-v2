@@ -1,5 +1,6 @@
 export default {
   name: 'home',
+  path: '/',
   init: home
 }
 
