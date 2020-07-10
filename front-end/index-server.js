@@ -23,12 +23,16 @@ const mimeTypes = {
 }
 
 const instFileRequest = url => !(/.+\..{1,4}$/).test(url)
+const setSrcOnPath = url => `/src${url}`
+const setSrcFirst = url => !(/^\/src/).test(url)
+  ? setSrcOnPath(url.split('src')[1])
+  : url
 
-const adjustUrl = url => !(/src/).test(url) ? `/src${url}` : url
+const adjustUrl = url => !(/src/).test(url) ? setSrcOnPath(url) : setSrcFirst(url)
 
 function verifyUrl(url, isFetchSafe) {
   const isIndexOrNotSecure = url === '/' || !isFetchSafe || instFileRequest(url)
-  const adjustedUrl = !isIndexOrNotSecure ? adjustUrl(url) : url
+  const adjustedUrl = adjustUrl(url)
   const defaultPath = path.join('public', 'index.html')
 
   return isIndexOrNotSecure ? defaultPath : adjustedUrl
