@@ -9,7 +9,8 @@ export default async function getComponent(component) {
 
   http.setUrl(`${baseUrl}/${component.html}`)
   const htmlResult = await http.makeRequest('GET', null, null, 'text/html')
-  result.html = minifyHTML(htmlResult)
+  const htmlWithComponents = htmlResult
+  result.html = minifyHTML(htmlWithComponents)
   
   if(component.css) {
     http.setUrl(`${baseUrl}/${component.css}`)
