@@ -1,12 +1,11 @@
 'use strict'
 import componentsService from '../../componentsService/componentsService.js'
 import PageContentBuilder from '../PageContentBuilder/PageContentBuilder.js'
-import getComponent from '../componentExtractor/componentExtractor.js'
 import historyRouting from './historyRouting.js'
+import { loadComponentContent } from '../componentsStorage/componentsStorage.js'
 
 class MainRouter {
   currentPath = null
-  componentsCache = []
   componentsRoot = document.querySelector('[main]') || document.body
   componentsPaths = componentsService.map(component => component.path)
   callbacks = {}
@@ -60,7 +59,7 @@ class MainRouter {
   }
 
   async loadPageContent(path, keyId = null) {
-    const componentContent = await this.getPageContent(path)
+    const componentContent = await loadComponentContent(path)
 
     if(!componentContent) return this.notFound()
 
@@ -76,22 +75,6 @@ class MainRouter {
       this.currentPath = path
       this.addRoutingEvent()
     })
-  }
-
-  async getPageContent(path) {
-    const findByPath = comp => comp.path === path
-    const existingComponent = this.componentsCache.find(findByPath)
-
-    if(existingComponent) return existingComponent
-    if(!this.componentsPaths.includes(path)) return null
-    
-    const componentInfo = componentsService.find(findByPath)
-    const component = await getComponent(componentInfo)
-
-    const newComponent = { ...componentInfo, ...component }
-
-    this.componentsCache = [ ...this.componentsCache, newComponent ]
-    return newComponent
   }
 
   notFound() {
