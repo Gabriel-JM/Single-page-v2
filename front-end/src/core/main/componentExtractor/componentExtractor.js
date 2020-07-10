@@ -1,4 +1,6 @@
 import HttpRequest from '../../httpRequest/HttpRequest.js'
+import componentsService from '../../componentsService/componentsService.js'
+import { retriveFromCache } from '../componentsStorage/componentsStorage.js'
 
 const http = new HttpRequest()
 const defaultComponentsUrl = `${location.origin}/src/app/`
@@ -9,7 +11,7 @@ export default async function getComponent(component) {
 
   http.setUrl(`${baseUrl}/${component.html}`)
   const htmlResult = await http.makeRequest('GET', null, null, 'text/html')
-  const htmlWithComponents = htmlResult
+  const htmlWithComponents = getInnerComponents(htmlResult)
   result.html = minifyHTML(htmlWithComponents)
   
   if(component.css) {
@@ -33,4 +35,21 @@ function minifyCSS(data) {
     .replace(regex, "")
     .replace(/(:)\s/g, "$1")
     .replace(/\s({)/g, "$1")
+}
+
+function getInnerComponents(htmlString) {
+  const componentsName = componentsService.map(({ name }) => name)
+
+  componentsName.forEach(name => {
+    const regex = `<(${name}) .*\/>`
+    const component = retriveFromCache(comp => comp.name === name)
+    console.log('regex:', regex, 'component:', component && component.html)
+    if(!component) return
+    
+    htmlString = htmlString.replace(RegExp(regex, 'g'), component.html)
+    console.log(htmlString)
+  })
+
+  console.log(htmlString)
+  return htmlString
 }
