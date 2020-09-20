@@ -3,6 +3,7 @@ import componentsService from '../../componentsService/componentsService.js'
 import PageContentBuilder from '../PageContentBuilder/PageContentBuilder.js'
 import getComponent from '../componentExtractor/componentExtractor.js'
 import historyRouting from './historyRouting.js'
+import { getComponentFromStore } from '../componentsStore/storage.js'
 
 class MainRouter {
   currentPath = null
@@ -60,7 +61,7 @@ class MainRouter {
   }
 
   async loadPageContent(path, keyId = null) {
-    const componentContent = await this.getPageContent(path)
+    const componentContent = await getComponentFromStore(path)
 
     if(!componentContent) return this.notFound()
 
